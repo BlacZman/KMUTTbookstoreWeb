@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
     <title>Kmutt Bookstore</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta charset="utf-8" name="viewport" content="width=device-width">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         #pic{
@@ -26,12 +25,10 @@
 </head>
 <body>
     <script>
+        var pastValue = document.getElementsByTagName('input')[0].value;
+        var globalTime = null;
         function searching(value) {
             if(value.length > 0) {
-                /*
-                var xml = new XMLHttpRequest();
-                xml.open("GET","server.js?search="+value,true);
-                xml.send();*/
                 var success = 0,
                 data;
                 $(document).ready(function() {
@@ -47,8 +44,21 @@
             }
             else document.getElementById('p1').innerHTML = "";
         }
+        function checkChange(value) {
+            if(globalTime != null) {
+                clearTimeout(globalTime);
+                globalTime = setTimeout(function(){
+                    searching(value);
+                },700);
+            }
+            else {
+                globalTime = setTimeout(function(){
+                    searching(value);
+                },700);
+            }
+        }
     </script>
-    <input type="text" oninput="searching(this.value)" id="input" placeholder="Please enter">
+    <input type="text" oninput="checkChange(this.value)" id="input" placeholder="Please enter">
     <div>
         <p id="p1"></p>
     </div>
