@@ -26,8 +26,8 @@ app.get('/*', function(req, res) {
                 arr = result;
                 Object.keys(arr).forEach(function(key) {
                     var row = arr[key];
-                    console.log("Search for " + query.search + " Result: " + row.title);
-                    txtstr = txtstr + "<div id=\"Bookcontent\"><img id=\"pic\" src=\"" + row.isbn + ".jpg\" alt=\"No picture\"><p>ISBN: " + row.isbn + ", Title: " + row.title + ", Author: " + row.author + ", Translator: " + row.translator + ", Publisher: " + row.publisher + ", Price: " + row.price + ", Timestamp: " + row.timestamp + "</p></div>";
+                    console.log("Search for " + query.search + " Result: " + row.isbn);
+                    txtstr = txtstr + "<div id=\"Bookcontent\"><img id=\"pic\" src=\"" + row.isbn + ".jpg\" alt=\"No picture\" onError=\"this.onerror=null;this.src='404.jpg'\"><p>ISBN: " + row.isbn + ", Title: " + row.title + ", Author: " + row.author + ", Translator: " + row.translator + ", Publisher: " + row.publisher + ", Price: " + row.price + ", Timestamp: " + row.timestamp + "</p></div>";
                 });
                 txtstr = txtstr + "</div>";
             });

@@ -62,12 +62,28 @@ exports.connectquery =  {
     },
     //queryResult: [{isbn:"111"}],
     selector: function(table, prop, whrcommand, passValue_callback) { //selection(tb, prop, cmd, function(err, result) {})
-        var dummy = "ggwp";
-        //this.queryResult.splice(0,this.queryResult.length-1);
         if(con == null) throw "Error: not connect to mysql";
         con.connect(function(err) {
             if(err) throw err;
-            con.query("SELECT " + prop + " FROM " + table + " WHERE " + whrcommand, function (err, result, field) {
+            con.query("SELECT " + prop + " FROM " + table + " WHERE " + mysql.escape(whrcommand), function (err, result, field) {
+                if (err) throw err;
+                var childarr = [];
+                Object.keys(result).forEach(function(key) {
+                    var arr = result[key];
+                    var placeholder = {isbn: arr.isbn, title: arr.title, author: arr.author, translator: arr.translator, publisher: arr.publisher, price: arr.price, timestamp: arr.timestamp};
+                    var format = JSON.stringify(placeholder);
+                    var op = JSON.parse(format)
+                    childarr.push(op);
+                });
+                passValue_callback(null, childarr);
+            });
+        });
+    },
+    selectAll: function(table, passValue_callback) {
+        if(con == null) throw "Error: not connect to mysql";
+        con.connect(function(err) {
+            if(err) throw err;
+            con.query("SELECT * FROM " + table, function (err, result, field) {
                 if (err) throw err;
                 var childarr = [];
                 Object.keys(result).forEach(function(key) {
