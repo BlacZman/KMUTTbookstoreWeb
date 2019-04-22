@@ -4,7 +4,8 @@ url = require('url'),
 mysql = require('mysql');
 myquery = require("./queryCon"),
 dec = require('atob'),
-pass = ""//your password,
+account = require('./database');
+pass = account.data.pass//your password,
 mydb = myquery.connectquery,
 express = require('express'),
 app = express();
@@ -20,8 +21,8 @@ app.get('/*', function(req, res) {
         }
         else {
             var txtstr = "<div id=\"parentDiv\">";
-            mydb.createquery(""//your username, dec(pass)//decoding password if it's encoded);
-            mydb.selector("book", "isbn, title, author, translator, publisher, price, timestamp", "isbn LIKE '%" + query.search + "%'", function(err, result) {
+            mydb.createquery(account.data.user/*your username*/, dec(account.data.pass)/*decoding password if it's encoded*/);
+            mydb.selector("book", "isbn, title, author, translator, publisher, price, timestamp", "(isbn LIKE '%" + query.search + "%' OR title LIKE '%" + query.search + "%' OR author LIKE '%" + query.search + "%' OR translator LIKE '%" + query.search + "%' OR publisher LIKE '%" + query.search + "%')", function(err, result) {
                 if(err) throw err;
                 arr = result;
                 Object.keys(arr).forEach(function(key) {
@@ -32,9 +33,10 @@ app.get('/*', function(req, res) {
                 txtstr = txtstr + "</div>";
             });
             setTimeout(()=>{ res.writeHead(200, {"Content-Type": "text/html"});
+                console.log(txtstr);
                 res.write("Result for " + mysql.escape(query.search) + " is:");
-                if(txtstr != "")res.end(txtstr);
-                else res.end("No result");
+                if(txtstr != "<div id=\"parentDiv\"></div>")res.end(txtstr);
+                else res.end("<p>No result</p>");
             }, 100);
         }
     });

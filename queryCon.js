@@ -65,7 +65,7 @@ exports.connectquery =  {
         if(con == null) throw "Error: not connect to mysql";
         con.connect(function(err) {
             if(err) throw err;
-            con.query("SELECT " + prop + " FROM " + table + " WHERE " + mysql.escape(whrcommand), function (err, result, field) {
+            con.query("SELECT " + prop + " FROM " + table + " WHERE " + whrcommand, function (err, result, field) {
                 if (err) throw err;
                 var childarr = [];
                 Object.keys(result).forEach(function(key) {
