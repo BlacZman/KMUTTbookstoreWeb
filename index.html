@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Kmutt Bookstore</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        #pic{
+            width: 175px;
+            height: 250px;
+        }
+        #Bookcontent{
+            display: block;
+            float: left;
+            margin: 2px;
+            width: 200px;
+            height: 510px;
+            text-align: center;
+        }
+        #parentDiv{
+            display: block;
+
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function searching(value) {
+            if(value.length > 0) {
+                /*
+                var xml = new XMLHttpRequest();
+                xml.open("GET","server.js?search="+value,true);
+                xml.send();*/
+                var success = 0,
+                data;
+                $(document).ready(function() {
+                    $.ajax({
+                        type: 'GET',
+                        url: 'server.js',
+                        data: 'search=' + value,
+                        success: function(res) {
+                            document.getElementById('p1').innerHTML = res;
+                        }
+                    });
+                });
+            }
+            else document.getElementById('p1').innerHTML = "";
+        }
+    </script>
+    <input type="text" oninput="searching(this.value)" id="input" placeholder="Please enter">
+    <div>
+        <p id="p1"></p>
+    </div>
+</body>
+</html>
